@@ -14,10 +14,11 @@ const (
 )
 
 type App struct {
-	Cmd *cobra.Command
+	Cmd cobra.Command
 }
 
-func (p *App) InitCmd() {
+func (p *App) InitCmd(use, usage string) {
+	p.Cmd.Use = ""
 	p.Cmd.Flags().StringP(FLAG_CONFIG, FLAG_C, "", "config file path")
 }
 
@@ -25,9 +26,6 @@ func (p *App) InitConfig(pointer interface{}) error {
 	rv := reflect.TypeOf(pointer)
 	if rv.Kind() != reflect.Ptr {
 		return errors.New(fmt.Sprintf("expected pointer,go %s", rv))
-	}
-	if p.Cmd == nil {
-		return errors.New("p.Cmd is nil")
 	}
 	if err := viper.BindPFlags(p.Cmd.Flags()); err != nil {
 		return errors.Wrap(err, "failed to bind p.Cmd flags")
