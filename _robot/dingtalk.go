@@ -4,6 +4,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"github.com/koyeo/goutils/_http"
 	"log"
@@ -94,7 +95,8 @@ func (p *DingTalkRobot) Push(message interface{}) {
 
 func (p *DingTalkRobot) Listen() {
 	p.Bucket().PopTimely(func(messages []interface{}) {
-		if len(messages) == 0 {
+		l := len(messages)
+		if l == 0 {
 			return
 		}
 		var title string
@@ -103,7 +105,11 @@ func (p *DingTalkRobot) Listen() {
 		} else if p.config.Title != "" {
 			title = p.config.Title
 		} else {
-			title = fmt.Sprintf("%d message(s)", len(messages))
+			if l > 1 {
+				title = fmt.Sprintf("%d messages", l)
+			} else {
+				title = fmt.Sprintf("%d messages", l)
+			}
 		}
 		err := p.Request(title, p.PrepareMarkdown(messages))
 		if err != nil {
@@ -147,7 +153,12 @@ func (p *DingTalkRobot) PrepareMarkdown(messages []interface{}) *DingTalkMessage
 			item := v.(DingTalkMessageLink)
 			msg.Text += fmt.Sprintf("##%s\n![](%s)[%s](%s)\n%s\n", item.Title, item.PicUrl, item.MessageUrl, item.MessageUrl, item.Text)
 		default:
-			msg.Text += fmt.Sprintf("%+v", v)
+			d, err := json.Marshal(v)
+			if err != nil {
+				msg.Text += fmt.Sprintf("%+v\n", v)
+			} else {
+				msg.Text += fmt.Sprintf("%s\n", string(d))
+			}
 		}
 	}
 	
