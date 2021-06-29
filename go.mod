@@ -3,7 +3,7 @@ module github.com/koyeo/goutils
 go 1.15
 
 require (
-	github.com/bitly/go-simplejson v0.5.0 // indirect
-	github.com/spf13/cobra v1.1.3 // indirect
-	github.com/spf13/viper v1.7.1 // indirect
+	github.com/bitly/go-simplejson v0.5.0
+	github.com/labstack/echo/v4 v4.3.0 // indirect
+	github.com/robfig/cron/v3 v3.0.1 // indirect
 )
