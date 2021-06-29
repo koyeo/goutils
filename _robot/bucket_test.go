@@ -14,7 +14,7 @@ func TestNewBucket(t *testing.T) {
 		}
 	}()
 	
-	bucket.Instant(func(messages []interface{}) {
+	bucket.PopTimely(func(messages []interface{}) {
 		t.Log(len(messages), messages)
 	})
 }
@@ -28,7 +28,7 @@ func TestNewBucket2(t *testing.T) {
 		}
 	}()
 	
-	bucket.Pop(func(messages []interface{}) {
+	bucket.PopLazily(func(messages []interface{}) {
 		t.Log(len(messages), messages)
 	})
 }
@@ -46,7 +46,7 @@ func TestNewBucket2(t *testing.T) {
 //		}
 //	}()
 //
-//	bucket.Pop(func(messages []interface{}) {
+//	bucket.PopLazily(func(messages []interface{}) {
 //		t.Log(len(messages), messages)
 //	})
 //}
