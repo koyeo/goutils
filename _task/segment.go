@@ -4,7 +4,14 @@ import "fmt"
 
 type Segment struct {
 	StartId int64 `json:"start_id"`
-	EndId   int64   `json:"end_id"`
+	EndId   int64 `json:"end_id"`
+}
+
+func (p Segment) Copy() *Segment {
+	return &Segment{
+		StartId: p.StartId,
+		EndId:   p.EndId,
+	}
 }
 
 func CalcSegments(firstId, lastId, routines int64) (segments []*Segment, err error) {

@@ -125,7 +125,7 @@ func (p *Manager) All() (tasks []map[string]interface{}) {
 	return
 }
 
-func (p *Manager) Listen(addr string) error {
+func (p *Manager) Listen(serve bool, addr string) error {
 	
 	if p.entries == nil {
 		p.entries = map[string]cron.EntryID{}
@@ -140,7 +140,9 @@ func (p *Manager) Listen(addr string) error {
 	}
 	p.cron.Start()
 	
-	go p.Serve(addr)
+	if serve {
+		go p.Serve(addr)
+	}
 	// TODO 等待任务执行完再退出
 	// 平滑退出
 	// 强制退出
